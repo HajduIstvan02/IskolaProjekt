@@ -1,9 +1,10 @@
-<script setup>
-import TheWelcome from '../components/TheWelcome.vue'
+<template>
+  <h2>School Project</h2>
+</template>
+<script>
+
+export default {
+
+}
 </script>
 
-<template>
-  <main>
-    <TheWelcome />
-  </main>
-</template>

@@ -1,8 +1,16 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
+  <div>
+    <h2>Third</h2>
+    <p>There should be the table</p>
   </div>
 </template>
+
+<script>
+export default {
+  name: 'Component3'
+};
+</script>
+
 
 <style>
 @media (min-width: 1024px) {
