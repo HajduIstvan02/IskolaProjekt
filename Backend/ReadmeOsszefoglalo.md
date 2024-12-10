@@ -1,5 +1,3 @@
-## Főcím
-
 # Parancok öszefoglaló
 - Laravel REST API projekt létrehozás
     - `composer create-project laravel/laravel laravel-iskola`
