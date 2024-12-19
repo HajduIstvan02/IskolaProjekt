@@ -114,8 +114,9 @@ class QeriesController extends Controller
         //     WHERE nev = "'.$nev.'" union select * from users#"';
         // $rows= DB::select($query);
         $query = '
-            SELECT * from diaks 
-            WHERE nev = "'.$nev.'"';
+            SELECT * from diaks d
+                INNER JOIN osztalies o ON d.osztalyId = o.id
+                WHERE nev = "'.$nev.'"';
         $rows= DB::select($query);
 
         //no sql sinjection
