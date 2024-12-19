@@ -1,5 +1,5 @@
 <template>
-  <h1>Regisztráció</h1>
+  <h1>Registraion</h1>
 </template>
 
 <script>
