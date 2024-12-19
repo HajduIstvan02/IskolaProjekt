@@ -1,6 +1,9 @@
 <template>
-  <h2>Home</h2>
-  <Counter />
+  <div>
+
+    <h2>Home</h2>
+    <Counter />
+  </div>
 </template>
 
 <script>
