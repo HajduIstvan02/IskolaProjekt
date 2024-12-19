@@ -62,6 +62,7 @@ export default {
   data(){
     return {
       user: {
+        name: " ",
         email: " ",
         password: " "
       },
@@ -72,7 +73,7 @@ export default {
   methods: {
     async userAuth(){
       this.errorMessage= "...";
-      const url = `${BASE_URL}/users/login`
+      const url = `${BASE_URL}/users/registration`
       const headers = {
         Accept: 'application/json',
         'Content-Type': 'application/json'
@@ -83,12 +84,12 @@ export default {
         this.store.setId(response.data.data.id);
         this.store.setUser(response.data.data.name);
         this.store.setToken(response.data.data.token);
-        this.errorMessage = "Sikeres bejelentkezés"
+        this.errorMessage = "Successfully registartion"
         this.$router.push('/');
 
       } catch (error) {
         console.log(error);
-        this.errorMessage="Sikertelen bejelenkezés"
+        this.errorMessage="Please try again!"
         this.store.clearStoredData();
       }  
 
