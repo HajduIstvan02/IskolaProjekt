@@ -31,6 +31,14 @@
                 />
               </div>
               <div class="form-group mb-3">
+                <input
+                  type="password"
+                  v-model="user.password"
+                  placeholder="Reset password*"
+                  class="form-control"
+                />
+              </div>
+              <div class="form-group mb-3">
                 <div class="d-flex align-items-center">
                   <button type="submit" class="btn btn-primary me-4">
                     Registration
@@ -62,7 +70,7 @@ export default {
   data(){
     return {
       user: {
-        name: " ",
+        name: "",
         email: " ",
         password: " "
       },
