@@ -2,45 +2,45 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Diak;
-use App\Models\Osztaly;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class QeriesController extends Controller
+class QueriesController extends Controller
 {
-    public function queryOsztalynevsorok()
-    {
-        //natív SQL
-        $rows =  DB::select(
-            'SELECT  osztalyNev, nev FROM diaks d
-                INNER JOIN osztalies o ON d.osztalyId = o.id
-                ORDER BY osztalyNev, nev'
-        );
+    public function queryOsztalynevsor(){
+        $query = 'SELECT  osztalyNev, nev from diaks d
+            inner join osztalies o on d.osztalyId = o.id
+            order by osztalyNev, nev';
+        $rows= DB::select($query);
+        $data = [
+            'message' => 'ok',
+            'data' => $rows
+        ];
 
-        //DB facade
-        // $rows = DB::table('diaks as d')
-        //     ->join('osztalies as o', 'd.osztalyId', '=', 'o.id')
-        //     ->select('osztalyNev', 'nev')
-        //     ->orderBy('osztalyNev', 'asc')
-        //     ->orderBy('nev', 'asc')
-        //     ->get();
+        return response()->json($data, options:JSON_UNESCAPED_UNICODE);
+    }
 
-        //Eloquent
-        // $rows = Diak::with('osztalies')
-        //     // ->orderBy('osztalies.osztalyNev', 'asc')
-        //     ->orderBy('nev', 'asc')
-        //     ->get();
+    public function queryOsztalynevsorObj(){
+        $query = 
+        "SELECT o.osztalyNev, GROUP_CONCAT(nev ORDER BY nev SEPARATOR ', ') AS nevek  FROM diaks d
+            INNER JOIN osztalies o ON d.osztalyId = o.id
+            GROUP BY osztalyNev";
+        $rows= DB::select($query);
 
-        //$rows = Osztaly::with('diakok');
-
+        $rows = array_map(function($osztaly){
+            $nevek = explode(', ', $osztaly->nevek);
+            return [
+                'osztalyNev' => $osztaly->osztalyNev,
+                'nevek' => $nevek
+            ];
+        }, $rows);
 
         $data = [
             'message' => 'ok',
             'data' => $rows
         ];
 
-        return response()->json($data, options: JSON_UNESCAPED_UNICODE);
+        return response()->json($data, options:JSON_UNESCAPED_UNICODE);
     }
 
     public function queryOsztalynevsorLimit(int $oldal, int $limit){
@@ -100,46 +100,24 @@ class QeriesController extends Controller
 
         return response()->json($data, options:JSON_UNESCAPED_UNICODE);
     }
+    
 
-
-    public function queryDiakKeres( $nev){
-
-
-        //return response()->json($nev, options:JSON_UNESCAPED_UNICODE);
-
-
-        //sql injection
-        // $query = '
-        //     SELECT id, osztalyId, nev,neme,szuletett,helyseg, osztondij, atlag from diaks 
-        //     WHERE nev = "'.$nev.'" union select * from users#"';
-        // $rows= DB::select($query);
-        // $query = '
-        //     SELECT d.id, osztalyId, nev, neme, szuletett, helyseg, osztondij, atlag, osztalynev from diaks d
-        //         INNER JOIN osztalies o ON d.osztalyId = o.id
+    public function queryDiakKeres(string $nev){
+        // return response()->json($nev, options:JSON_UNESCAPED_UNICODE);
+        // $query ='
+        //     SELECT * FROM diaks
         //         WHERE nev = "'.$nev.'"';
         // $rows= DB::select($query);
-        
-        //no sql sinjection
-        // $query = '
-        //     SELECT id, osztalyId, nev,neme,szuletett,helyseg, osztondij, atlag from diaks 
-        //     WHERE nev = ?';
-        $query = '
-            SELECT d.id, osztalyId, nev, neme, szuletett, helyseg, osztondij, atlag, osztalynev from diaks d
-                INNER JOIN osztalies o ON d.osztalyId = o.id
-                WHERE nev = ?';
-
-        $rows= DB::select($query, [$nev]);
+        $query ='
+        SELECT * FROM diaks
+            WHERE nev = ?';
+        $rows= DB::select($query,[$nev]);
         $data = [
             'message' => 'ok',
             'data' => $rows,
-            'query' => $query
+            'sql' => $query
         ];
 
         return response()->json($data, options:JSON_UNESCAPED_UNICODE);
     }
-
-
-
-
-
 }

@@ -11,10 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('osztalies', function (Blueprint $table) {
-            $table->Integer('id')->unsigned()->autoIncrement();
-            $table->string('osztalyNev', 50)->notNull();
-            // $table->timestamps();
+        Schema::table('diaks', function (Blueprint $table) {
+            $table->string('akarmi', 50)->nullable(true);
         });
     }
 
@@ -23,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('osztalies');
+        Schema::table('diaks', function (Blueprint $table) {
+            
+        });
     }
 };

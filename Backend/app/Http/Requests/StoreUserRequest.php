@@ -4,14 +4,13 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreUsersRequest extends FormRequest
+class StoreUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        //Mindenki jogosult a módosító műveletekre
         return true;
     }
 
@@ -23,9 +22,9 @@ class StoreUsersRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string',
+            'name' => 'required|string|min:2',
             'email' => 'required|email',
-            'password' => 'required',
+            'password' => 'required|min:2',
         ];
     }
 }

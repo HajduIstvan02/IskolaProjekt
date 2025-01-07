@@ -29,6 +29,7 @@ class UpdateDiakRequest extends FormRequest
             'helyseg' => 'nullable|string|min:2',
             'osztondij' => 'nullable|numeric',
             'atlag' => 'nullable|numeric',
+
         ];
     }
 }

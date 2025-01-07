@@ -11,7 +11,6 @@ class UpdateSportRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        //Bármely felhasználó csinálhatja
         return true;
     }
 

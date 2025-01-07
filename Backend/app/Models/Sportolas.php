@@ -4,15 +4,28 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Notifications\Notifiable;
 
 class Sportolas extends Model
 {
     /** @use HasFactory<\Database\Factories\SportolasFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory;
 
     protected $fillable = [
         'diakokId',
         'sportokId',
     ];
+
+
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
+
+    protected function casts(): array
+    {
+        return [
+            'diakokId' => 'integer',
+            'sportokId' => 'integer',                      
+        ];
+    }
 }
