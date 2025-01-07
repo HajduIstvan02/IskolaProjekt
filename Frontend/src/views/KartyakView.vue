@@ -69,6 +69,8 @@ export default {
     };
   },
   async mounted() {
+// console.log("Hello");
+
     this.cardPerPageCorrection();
     console.log(1);
     await this.getOsztalynevsor();
@@ -77,30 +79,32 @@ export default {
     console.log(3);
   },
   watch: {
-    $routeChanged: "routeChanged",
-    async cardsPerPage(old, cur) {
-      // if (old != cur) {
-        await this.getOsztalynevsor();
-        await this.getPageCount();
-        console.log(4);
-      // }
-      console.log(5);
-      // if (this.pageNumber >= 0 && this.pageNumber <= this.numberOfPages) {
-      // }
-      this.pageNumber = Math.min(this.pageNumber, this.numberOfPages);
-      this.routerReplacer();
-    },
-    pageNumber(old, cur) {
-      // if (old == cur) {
-      //   return;
-      // }
-      console.log(6);
-      this.getOsztalynevsor();
-      this.routerReplacer();
-    },
+    // $routeChanged: "routeChanged",
+    // async cardsPerPage(old, cur) {
+    //   // if (old != cur) {
+    //     await this.getOsztalynevsor();
+    //     await this.getPageCount();
+    //     console.log(4);
+    //   // }
+    //   console.log(5);
+    //   // if (this.pageNumber >= 0 && this.pageNumber <= this.numberOfPages) {
+    //   // }
+    //   this.pageNumber = Math.min(this.pageNumber, this.numberOfPages);
+    //   this.routerReplacer();
+    // },
+    // pageNumber(old, cur) {
+    //   // if (old == cur) {
+    //   //   return;
+    //   // }
+    //   console.log(6);
+    //   this.getOsztalynevsor();
+    //   this.routerReplacer();
+    // },
   },
   methods: {
     async getOsztalynevsor() {
+    console.log("cardPerPage ",this.cardsPerPage);
+
       const url = `${this.urlApi}/queryOsztalynevsorLimit/${this.pageNumber}/${this.cardsPerPage}`;
       const response = await axios.get(url);
       this.cards = response.data.data;
@@ -128,11 +132,11 @@ export default {
       });
     },
     cardPerPageCorrection() {
-      if (!this.rowsPerPageArray.includes(this.cardsPerPage)) {
-        this.cardsPerPage = this.rowsPerPageArray
-          .filter((x) => x < this.cardsPerPage)
-          .sort((a, b) => b - a)[0];
-      }
+      // if (!this.rowsPerPageArray.includes(this.cardsPerPage)) {
+      //   this.cardsPerPage = this.rowsPerPageArray
+      //     .filter((x) => x < this.cardsPerPage)
+      //     .sort((a, b) => b - a)[0];
+      // }
     },
     routeChanged() {
       console.log("route changed");
