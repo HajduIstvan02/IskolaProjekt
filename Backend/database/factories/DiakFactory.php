@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Helpers\VeletlenVaros;
+use App\Helpers\VeletlenClass;
 use App\Models\Osztaly;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Faker\Factory as Faker;
@@ -19,8 +19,10 @@ class DiakFactory extends Factory
      */
     public function definition(): array
     {
-        $faker =  Faker::create('hu_HU');
+        //Faker objektum létrehozás adott nyelven
+        $faker = Faker::create('hu_HU');
 
+        //Dátum generálás
         $minDate = '2010-01-01';
         $maxDate = '2015-12-31';
         $randomDate = fake()->date('Y-m-d', $maxDate);
@@ -30,29 +32,30 @@ class DiakFactory extends Factory
             $randomDate = fake()->date('Y-m-d', $maxDate);
         }
 
-
-
-
-        $neme = fake()->boolean();
+        //Neme generálás
+        $neme = fake()->boolean;
+        
+        //Megfelelő nemű név generálása Faker-el
         if ($neme) {
             //férfi
-            $nev = $faker->lastName(). " " . $faker->firstNameMale();
+            $nev =$faker->lastName(). " ". $faker->firstNameMale();
         } else {
-            $nev = $faker->lastName(). " " . $faker->firstNameFemale();
             //nő
+            $nev =$faker->lastName(). " ". $faker->firstNameFemale();
         }
         
+        //Véletlen oszályId kiolvasása az ostalies táblából
         $osztalyId = Osztaly::inRandomOrder()->first()->id;
 
         return [
-            'osztalyId' => $osztalyId,
             'nev' => $nev,
             'neme' => $neme,
+            'osztalyId' => $osztalyId,
             'szuletett' => $randomDate,
-            'helyseg' => $faker->city(),
-            //'helyseg' => VeletlenVaros::randomVaros(),
-            'osztondij' => $faker->numberBetween(1000, 10000),
-            'atlag' => $faker->randomFloat(1, 1, 5),
+            // 'helyseg' => VeletlenClass::randomVaros(),
+            'helyseg' =>  $faker->city(),
+            'osztondij' => fake()->numberBetween(5000, 7000),
+            'atlag' => fake()->randomFloat(1, 1, 5)
         ];
     }
 }

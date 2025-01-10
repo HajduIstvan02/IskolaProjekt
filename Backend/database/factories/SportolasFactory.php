@@ -6,7 +6,6 @@ use App\Models\Diak;
 use App\Models\Sport;
 use App\Models\Sportolas;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\DB;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Sportolas>
@@ -20,33 +19,14 @@ class SportolasFactory extends Factory
      */
     public function definition(): array
     {
-
+        //Az összetett kulcsnak együtt kell egyedinek lenni
+        //Olyan diák és sport párt keresünk, ami még nem volt
         do {
             $diakokId = Diak::inRandomOrder()->first()->id;
             $sportokId = Sport::inRandomOrder()->first()->id;
         } while (Sportolas::where('diakokId', $diakokId)->where('sportokId', $sportokId)->exists());
-       
     
 
-        // return [
-        //     'diakokId' => $diakokId,
-        //     'sportokId' => $sportokId,
-        // ];
-
-        // DB::beginTransaction();
-
-        // do {
-        //     $diakokId = Diak::inRandomOrder()->first()->id;
-        //     $sportokId = Sport::inRandomOrder()->first()->id;
-        // } while (Sportolas::where('diakokId', $diakokId)->where('sportokId', $sportokId)->exists());
-    
-        // Sportolas::create([
-        //     'diakokId' => $diakokId,
-        //     'sportokId' => $sportokId,
-        // ]);
-    
-        // DB::commit();
-    
         return [
             'diakokId' => $diakokId,
             'sportokId' => $sportokId,
