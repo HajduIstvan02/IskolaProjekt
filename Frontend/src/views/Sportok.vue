@@ -38,6 +38,17 @@
 </template>
   
   <script>
+  class ModifySport{
+    constructor(
+      id = null,
+      name = null,
+    ) {
+      this.id = id
+      this.name = name
+
+    }
+  }
+
 import { BASE_URL } from "../helpers/baseUrls";
 import axios from "axios";
 // import Modal from "@/components/Modal.vue";
@@ -47,6 +58,7 @@ export default {
   components: {Modal},
   data() {
     return {
+      modifyedSport: new ModifySport(this.uniqid()),
       rows: [],
       urlApi: BASE_URL,
       state: "read",
@@ -59,6 +71,8 @@ export default {
   },
   mounted() {
     this.getSports();
+    this.modal = new bootstrap.Modal("#modal", {
+      keyboard: false})
   },
   methods: {
     async getSports() {
@@ -69,7 +83,12 @@ export default {
     },
 
     onClickAdd(){
+      this.title = "New Sport"
+      this.yes = null
+      this.no = "Cancel"
+      this.size = "lg"
       this.state = "add"
+      this.modifyedSport = new ModifySport(this.uniqid())
     },
 
     onClickUpdate(){
@@ -82,6 +101,16 @@ export default {
     yesEventHandler(){
       console.log("Yes");
       
+    },
+    uniqid(length = 10) {
+      const characters =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+      let result = "";
+      for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        result += characters.charAt(randomIndex);
+      }
+      return result;
     },
   },
 };
