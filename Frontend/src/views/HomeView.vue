@@ -1,17 +1,19 @@
 <template>
-  <h2>Home</h2>
-  <Counter/>
+  <div>
+    <button @click="count++">{{ count }}</button>
+  </div>
 </template>
 
 <script>
-import Counter from '@/components/Counter/Counter.vue'
 export default {
-  components: {
-    Counter
+  data() {
+    return {
+      count: 0
+    }
   }
 }
 </script>
 
 <style>
-
+/* Itt lehet stílusok definiálása */
 </style>
